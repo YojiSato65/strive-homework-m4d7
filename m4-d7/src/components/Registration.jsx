@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 const Registration = () => {
   const [registration, setRegistration] = useState({
@@ -9,12 +10,6 @@ const Registration = () => {
     password: '',
     confirmedPassword: '',
   })
-
-  // const [name, setName] = useState('')
-  // const [surname, setSurname] = useState('')
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
-  // const [confirmedPassword, setConfirmedPassword] = useState('')
 
   //   const emailValidation = () =>
   //   {
@@ -28,10 +23,19 @@ const Registration = () => {
   //   }
   // }
 
-  const submitRegistration = () => {}
+  const navigate = useNavigate()
+
+  const submitRegistration = (e) => {
+    e.preventDefault()
+    if (registration.password === registration.confirmedPassword) {
+      navigate('/')
+    } else {
+      alert('Password unmatched!')
+    }
+  }
 
   return (
-    <Form onSubmit={setRegistration}>
+    <Form onSubmit={(setRegistration, submitRegistration)}>
       <Form.Group>
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -65,6 +69,7 @@ const Registration = () => {
         <Form.Control
           type="email"
           placeholder="Enter email"
+          required
           value={registration.email}
           onChange={(e) =>
             setRegistration({
@@ -77,6 +82,8 @@ const Registration = () => {
         <Form.Control
           type="password"
           placeholder="Password"
+          required
+          minlength={8}
           value={registration.password}
           onChange={(e) =>
             setRegistration({
@@ -89,6 +96,7 @@ const Registration = () => {
         <Form.Control
           type="password"
           placeholder="Confirm your password"
+          required
           value={registration.confirmedPassword}
           onChange={(e) =>
             setRegistration({
